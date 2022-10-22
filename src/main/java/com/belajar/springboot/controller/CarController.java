@@ -20,7 +20,7 @@ public class CarController {
         return carService.addCar(car);
     }
     @GetMapping("/{id}")
-    public Car findById(@PathVariable("id") Long id){
+    public Car findById(@PathVariable("id") Integer id){
         return carService.getById(id);
     }
     @GetMapping
@@ -28,11 +28,11 @@ public class CarController {
         return carService.getAllCar();
     }
     @PutMapping("/{id}")
-    public Car updateCar(@PathVariable("id")Long id, @RequestBody Car car){
+    public Car updateCar(@PathVariable("id")Integer id, @RequestBody Car car){
         return carService.updateCar(id, car);
     }
     @DeleteMapping("/{id}")
-    private Map<String, Boolean> deleteCar(@PathVariable("id")Long id){
+    private Map<String, Boolean> deleteCar(@PathVariable("id")Integer id){
         return carService.deleteCar(id);
     }
 }

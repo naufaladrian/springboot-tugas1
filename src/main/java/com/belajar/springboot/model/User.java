@@ -1,24 +1,27 @@
 package com.belajar.springboot.model;
 
 
+import com.belajar.springboot.enumated.UserType;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name= "user")
+@Table(name= "useres")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
-
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    @Column(name = "user_status", nullable = false)
+    private UserType userStatus;
     @Column(name = "age", nullable = false)
     private Integer age;
 
@@ -26,6 +29,14 @@ public class User {
     private String address;
 
     public User() {
+    }
+
+    public UserType getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserType userStatus) {
+        this.userStatus = userStatus;
     }
 
     public Integer getId() {
@@ -37,11 +48,11 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getPassword() {

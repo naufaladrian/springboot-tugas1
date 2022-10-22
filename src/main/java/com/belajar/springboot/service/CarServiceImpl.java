@@ -20,7 +20,7 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public Car getById(Long id){
+    public Car getById(Integer id){
         return carRepository.findById(id).get();
     }
 
@@ -30,7 +30,7 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public Car updateCar(Long id, Car car) {
+    public Car updateCar(Integer id, Car car) {
         Car updateDataCar = carRepository.findById(id).get();
         updateDataCar.setCarName(car.getCarName());
         updateDataCar.setColor(car.getColor());
@@ -40,7 +40,7 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public Map<String, Boolean> deleteCar(Long id) {
+    public Map<String, Boolean> deleteCar(Integer id) {
         Car updateDataCar =carRepository.findById(id).get();
         carRepository.delete(updateDataCar);
         Map<String, Boolean> response =new HashMap<>();

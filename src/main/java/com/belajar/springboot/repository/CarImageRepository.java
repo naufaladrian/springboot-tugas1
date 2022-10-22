@@ -1,9 +1,10 @@
 package com.belajar.springboot.repository;
 
-import com.belajar.springboot.model.Car;
+
+import com.belajar.springboot.model.CarImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Integer> {
+public interface CarImageRepository extends JpaRepository<CarImage, Integer> {
 }

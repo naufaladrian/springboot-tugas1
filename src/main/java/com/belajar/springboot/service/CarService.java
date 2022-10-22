@@ -7,8 +7,8 @@ import java.util.Map;
 
 public interface CarService {
     Car addCar(Car car);
-    Car getById(Long id);
-    Car updateCar(Long id, Car car);
+    Car getById(Integer id);
+    Car updateCar(Integer id, Car car);
     List<Car> getAllCar();
-    Map<String, Boolean> deleteCar(Long id);
+    Map<String, Boolean> deleteCar(Integer id);
 }

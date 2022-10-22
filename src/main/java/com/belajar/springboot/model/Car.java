@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "car_name", nullable = false, unique = true)
     private String carName;
@@ -21,7 +21,7 @@ public class Car {
     @Column(name = "color")
     private String color;
 
-    public Car(Long id, String carName, String type, String number, String color) {
+    public Car(int id, String carName, String type, String number, String color) {
         this.id = id;
         this.carName = carName;
         this.type = type;
@@ -32,11 +32,11 @@ public class Car {
     public Car() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
