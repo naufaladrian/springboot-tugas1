@@ -15,7 +15,7 @@ import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-
+ private  int id;
     private String username;
     @JsonIgnore
     private String password;
@@ -23,7 +23,8 @@ public class UserPrincipal implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserType userStatus;
 
-    public UserPrincipal(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(int id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -32,6 +33,7 @@ public class UserPrincipal implements UserDetails {
     public static UserPrincipal build(User user){
         List<GrantedAuthority> authorities= Collections.singletonList(new SimpleGrantedAuthority(user.getUserStatus().name()));
         return new UserPrincipal(
+                user.getId(),
                 user.getUserName(),
                 user.getPassword(),
                 authorities
@@ -70,5 +72,13 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

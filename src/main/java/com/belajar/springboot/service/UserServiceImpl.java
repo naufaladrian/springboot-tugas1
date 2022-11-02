@@ -4,7 +4,9 @@ import com.belajar.springboot.dto.LoginDTO;
 import com.belajar.springboot.dto.UserDTO;
 import com.belajar.springboot.exception.BusinessException;
 import com.belajar.springboot.jwt.JwtProvider;
+import com.belajar.springboot.model.TemporaryToken;
 import com.belajar.springboot.model.User;
+import com.belajar.springboot.repository.TemporaryTokenRepository;
 import com.belajar.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,15 +30,17 @@ public class UserServiceImpl implements UserService {
     private AuthenticationManager authenticationManager;
     private JwtProvider jwtProvider;
     private UserRepository userRepository;
+    private TemporaryTokenRepository temporaryTokenRepository;
     private UserDetailservice userDetailservice;
 
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserRepository userRepository, UserDetailservice userDetailservice) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserRepository userRepository,TemporaryTokenRepository temporaryTokenRepository, UserDetailservice userDetailservice) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userRepository = userRepository;
         this.userDetailservice = userDetailservice;
+        this.temporaryTokenRepository=temporaryTokenRepository;
     }
 
     @Override
@@ -60,13 +64,22 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public String login(LoginDTO loginDTO) {
+    public TemporaryToken login(LoginDTO loginDTO) {
         try {
           Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
             UserDetails userDetails = userDetailservice.loadUserByUsername(loginDTO.getUsername());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtProvider.generateJwtToken(authentication);
-            return jwt;
+            User user=userRepository.findByUsername(userDetails.getUsername()).get();
+            var tokenAlready=temporaryTokenRepository.findByUserId(user);
+            if (tokenAlready.isPresent()){
+                temporaryTokenRepository.delete(tokenAlready.get());
+            }
+            TemporaryToken temporaryToken=new TemporaryToken();
+            temporaryToken.setToken(jwt);
+            temporaryToken.setExpiredDate(new Date(System.currentTimeMillis()+900000));
+            temporaryToken.setUserId(user);
+            return temporaryTokenRepository.save(temporaryToken);
         } catch (BadCredentialsException e) {
             throw new RuntimeException(e.getMessage());
         }

@@ -21,11 +21,11 @@ public class Product {
     private Float price;
 
     @Lob
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "text")
     private String image;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "text")
     private String description;
 
     @CreationTimestamp

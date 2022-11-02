@@ -2,6 +2,7 @@ package com.belajar.springboot.controller;
 
 import com.belajar.springboot.dto.LoginDTO;
 import com.belajar.springboot.dto.UserDTO;
+import com.belajar.springboot.model.TemporaryToken;
 import com.belajar.springboot.model.User;
 import com.belajar.springboot.response.CommonResponse;
 import com.belajar.springboot.response.CommonResponseGenerator;
@@ -19,7 +20,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public CommonResponse<String> login(@RequestBody LoginDTO loginDTO){
+    public CommonResponse<TemporaryToken> login(@RequestBody LoginDTO loginDTO){
         return CommonResponseGenerator.successResponse(userService.login(loginDTO));
     }
 

@@ -4,6 +4,7 @@ import com.belajar.springboot.model.Product;
 import com.belajar.springboot.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +36,10 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.save(updateDataProduct);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Product> getAllProduct() {
-        return productRepository.findAll();
+        return productRepository.findAllByCreatedAtDesc();
     }
 
     @Override

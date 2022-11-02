@@ -1,5 +1,6 @@
 package com.belajar.springboot.jwt;
 
+import com.belajar.springboot.repository.TemporaryTokenRepository;
 import com.belajar.springboot.service.UserDetailservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
@@ -23,18 +25,25 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailservice userDetailservice;
 
+    @Autowired
+    private TemporaryTokenRepository temporaryTokenRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtProvider.validateJwtToken(jwt)) {
-                String username = jwtProvider.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = userDetailservice.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (jwt != null ) {
+                var temporaryToken=temporaryTokenRepository.assffafsa(jwt,new Date());
+                System.out.println(temporaryToken.get());
+                if (temporaryToken.isPresent()){
+                    String username = jwtProvider.getUserNameFromJwtToken(jwt);
+                    UserDetails userDetails = userDetailservice.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
