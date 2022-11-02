@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
     @Transactional(readOnly = true)
     @Override
     public List<Product> getAllProduct(String name) {
-        return productRepository.findAllByCreatedAtDesc(name);
+        return productRepository.findAllByNameIgnoreCaseContainingOrderByCreatedAtDesc(name);
     }
 
     @Override
