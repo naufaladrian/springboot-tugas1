@@ -24,8 +24,8 @@ public class ProductController {
         return productService.getById(id);
     }
     @GetMapping
-    public List<Product> getAll(){
-        return productService.getAllProduct();
+    public List<Product> getAll(@RequestParam(name = "name", required = false, defaultValue = "") String nama){
+        return productService.getAllProduct(nama);
     }
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable("id")Integer id, @RequestBody Product product){

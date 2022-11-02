@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<Product> getAllProduct() {
-        return productRepository.findAllByCreatedAtDesc();
+    public List<Product> getAllProduct(String name) {
+        return productRepository.findAllByCreatedAtDesc(name);
     }
 
     @Override

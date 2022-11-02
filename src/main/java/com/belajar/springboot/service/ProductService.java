@@ -10,6 +10,6 @@ public interface ProductService {
     Product addProduct(Product product);
     Product getById(Integer id);
     Product updateProduct(Integer id, Product product);
-    List<Product> getAllProduct();
+    List<Product> getAllProduct(String name);
     Map<String, Boolean> deleteProduct(Integer id);
 }

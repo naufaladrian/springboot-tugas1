@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    @Query(value = "select * from product a order by a.created_at desc", nativeQuery = true)
-    List<Product> findAllByCreatedAtDesc();
+    @Query(value = "select * from product a where a.name like %:nama% order by a.created_at desc", nativeQuery = true)
+    List<Product> findAllByCreatedAtDesc(String nama);
 }
